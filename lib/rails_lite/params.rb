@@ -2,11 +2,12 @@ require 'uri'
 
 class Params
   def initialize(req, route_params)
-    @req, @route_params = req, route_params
-    @params = {}
+    @params = route_params
+    
     if req.query_string
       parse_www_encoded_form(req.query_string)
-    elsif req.body
+    end
+    if req.body
       parse_www_encoded_form(req.body)
     end
   end
@@ -16,7 +17,7 @@ class Params
   end
 
   def to_s
-    @params.to_s
+    @params.to_json.to_s
   end
 
   private
@@ -34,7 +35,7 @@ class Params
         if key_level == keys_array.last
           hash_level[key_level] = value
         else
-          hash_level[key_level] = {} if hash_level[key_level] == nil
+          hash_level[key_level] ||= {}
           hash_level = hash_level[key_level]
         end
       end

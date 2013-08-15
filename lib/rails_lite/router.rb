@@ -13,7 +13,14 @@ class Route
   end
 
   def run(req, res)
-    @controller_class.new(req, res).invoke_action(@action_name)
+    route_params = {}
+    match_object = @pattern.match(req.path)
+    
+    match_object.names.each do |match_name| 
+      route_params[match_name] = match_object[match_name] 
+    end
+    
+    @controller_class.new(req, res, route_params).invoke_action(@action_name)
   end
 end
 
@@ -48,6 +55,6 @@ class Router
 
   def run(req, res)
     route = match(req)
-    route ? route.run(req, res) : (res.status = '404')
+    route ? route.run(req, res) : (res.status = 404)
   end
 end
