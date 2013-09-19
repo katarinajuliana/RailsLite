@@ -1,4 +1,4 @@
-Built to better understand the magic of the Rails framework.  
+Built in order to better understand the magic of the Rails framework.  
   
 Includes:  
 • Controller Class  
